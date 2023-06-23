@@ -1,16 +1,17 @@
+// Підключаю необхідні модулі та створюю екземпляр програми.
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-
 require('dotenv').config();
-
 const app = express();
 
+// Підключаю парсер JSON і дозволяю кросдоменні запити до програми через проміжне ПЗ cors
 // parse application/json
 app.use(express.json());
 // cors
 app.use(cors());
 
+// Підключаю роути для API, а також обробку помилки 404 та помилок сервера 500
 const routerApi = require('./api');
 app.use('/api', routerApi);
 
@@ -33,6 +34,9 @@ app.use((err, _, res, __) => {
   });
 });
 
+// Підключення до сервера MongoDB за допомогою mongoose.connect.
+// Цей метод повертає проміс, і коли він вирішиться йде старт серверу app.listen.
+// Якщо ж під час підключення до бази даних сталася помилка, то стартувати сервер немає ніякої причини - в консоль виводиться повідомлення про помилку.
 const PORT = process.env.PORT || 3000;
 const uriDb = process.env.DB_HOST;
 
